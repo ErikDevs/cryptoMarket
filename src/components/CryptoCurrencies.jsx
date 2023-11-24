@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import millify from 'millify';
 
 const CryptoCurrencies = () => {
-  const { data: cryptoList, status } = useSelector((state) => state.cryptoApi)
+  const { data: cryptoList} = useSelector((state) => state.cryptoApi)
   
   const dispatch = useDispatch()
   
@@ -35,7 +35,9 @@ const CryptoCurrencies = () => {
      <div className='search-crypto'>
      <Input placeholder='Search cryprocurrencies' onChange={(e) => setSearchTerm(e.target.value)} />
      </div>
-    <Row gutter={[32, 32]} className='crypto-card-cointainer'>
+     {cryptos?.length > 0 ? (
+     
+     <Row gutter={[32, 32]} className='crypto-card-cointainer'>
         
         {cryptos?.map((coin) => (
            <Col xs={24} sm={12} lg={6} className='crypto-card' key={coin.id}>
@@ -51,7 +53,14 @@ const CryptoCurrencies = () => {
            </Link>
         </Col>
         ))}    
-    </Row>
+    </Row>) : (
+    
+    <l-line-spinner
+          size="40"
+          stroke="3"
+          speed="1"
+          color="black" 
+        />)}
    </>
   )
 }

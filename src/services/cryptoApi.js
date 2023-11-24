@@ -31,17 +31,13 @@ export const fetchData = createAsyncThunk("cryptoApi/fetchData", async () => {
 const cryptoApi = createSlice({
     name: "cryptoApi",
     initialState: {
-        data: [],
-        status: '',   
+        data: [],   
     },
     reducers: {},
         extraReducers: (builder) => {
         builder
-        .addCase(fetchData.pending, (state) => {
-            state.status = 'loading';
-        })
         .addCase(fetchData.fulfilled, (state, action) => {
-            state.status = 'succeeded';
+            
             state.data = action.payload;
         })
     }

@@ -2,48 +2,58 @@ import { useEffect, useState } from 'react'
 import { Select, Typography, Row, Col, Avatar, Card } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchNews } from '../services/cryptoNew'
+import 'ldrs/ring2'
 
 const News = () => {
 
 const {Text, Title } = Typography
 const { Option} = Select
 
-const { data: cryptoNews, status } = useSelector((state) => state.cryptoNewsApi);
+const { data: cryptoNews } = useSelector((state) => state.cryptoNewsApi);
 const dispatch = useDispatch()
 
-const [ news, setNews ] = useState([cryptoNews]);
+const [ cryptos, setNews ] = useState([cryptoNews]);
 
-
-useEffect(() => {
-
+  
+  useEffect(() => {
   dispatch(fetchNews())
-
-}, [dispatch]);
-
+  }, [dispatch]);
 
   return (
     <>
       <Title level={2} className='heading' >
         Global Crypto News
       </Title>
+          {cryptos?.length > 0 ? (
           <Row gutter={[24, 24]}>
-          {news[0].map((newsToday, i) => (
+          {cryptos?.map((news, i) => (
             <Col xs={24} sm={12} lg={6} key={i}>
               <Card hoverable className='news-card'>
-                <a href={newsToday.link} target='_blank' rel='noreferrer'>
+                <a href={news.url} target='_blank' rel='noreferrer'>
                    <div className='news-image-container'>
                    <Title className='news-title' level={5}>
-                     {newsToday.title}
+                     {news.title}
                    </Title>               
                    </div>
-                   <img src = {newsToday?.image} alt="news image" width={300}  />
-                   <Title level={5}>{`${newsToday.publishedAt}`}</Title>
-                   <Title level={5}>{`Published at : ${newsToday.sourceName}`}</Title>
+                   <Title level={5}>{news.body}</Title>
+                   <Title level={5}>{`Published at : ${news.date}`}</Title>
                 </a>
               </Card>
             </Col>
           ))} 
           </Row>    
+          ) : (
+            <div style={{justifyContent: "center", display: "flex"}}>
+              <l-ring-2
+              size="30"
+              stroke="5"
+              stroke-length="0.25"
+              bg-opacity="0.1"
+              speed="0.8"
+              color="black" 
+            ></l-ring-2>
+            </div>
+        )}
     </>
   )
 }
